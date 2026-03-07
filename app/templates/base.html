@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mi Proyecto Flask</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+<nav>
+    <h2>Tienda Autopartes</h2>
+    <ul>
+        <li><a href="/">Inicio</a></li>
+        <li><a href="/productos">Productos</a></li>
+        <li><a href="/contacto">Contacto</a></li>
+    </ul>
+</nav>
+
+<main>
+{% block content %}
+{% endblock %}
+</main>
+
+<footer>
+<p>Proyecto Flask - 2026</p>
+</footer>
+
+</body>
+</html>
