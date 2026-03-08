@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VEYLI - Recuperar Contraseña</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Inter',sans-serif;
+    min-height:100vh;
+    display:flex;
+}
+
+.left-panel{
+    width:45%;
+    background:linear-gradient(135deg,#1a5f7a 0%,#2d8a9e 50%,#3ba3b5 100%);
+    padding:60px 50px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    position:relative;
+    overflow:hidden;
+}
+
+.left-panel::before{
+    content:'';
+    position:absolute;
+    top:-50%;
+    left:-50%;
+    width:200%;
+    height:200%;
+    background:radial-gradient(circle,rgba(255,255,255,0.05) 1px,transparent 1px);
+    background-size:30px 30px;
+    opacity:0.3;
+}
+
+.logo-container{
+    position:relative;
+    z-index:1;
+    margin-bottom:50px;
+}
+
+.logo{
+    width:200px;
+}
+
+.logo img{
+    width:100%;
+    height:auto;
+}
+
+.left-content{
+    position:relative;
+    z-index:1;
+    color:white;
+}
+
+.left-content h1{
+    font-size:42px;
+    font-weight:700;
+    line-height:1.2;
+    margin-bottom:20px;
+}
+
+.left-content h1 span{
+    color:#c9a227;
+}
+
+.left-content p{
+    font-size:16px;
+    line-height:1.6;
+    opacity:0.9;
+    margin-bottom:40px;
+    max-width:380px;
+}
+
+.stats{
+    display:flex;
+    gap:50px;
+}
+
+.stat-number{
+    font-size:36px;
+    font-weight:700;
+}
+
+.stat-label{
+    font-size:14px;
+    opacity:0.8;
+}
+
+.right-panel{
+    width:55%;
+    background:#f5f0e8;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:40px;
+}
+
+.login-card{
+    background:#ebe5db;
+    border-radius:20px;
+    padding:50px 45px;
+    width:100%;
+    max-width:420px;
+    box-shadow:0 4px 20px rgba(0,0,0,0.05);
+}
+
+.login-card h2{
+    font-size:22px;
+    font-weight:600;
+    color:#1a1a1a;
+    margin-bottom:10px;
+}
+
+.subtitle{
+    font-size:13px;
+    color:#666;
+    margin-bottom:30px;
+}
+
+.form-group{
+    margin-bottom:25px;
+}
+
+.form-group label{
+    display:block;
+    font-size:14px;
+    font-weight:500;
+    color:#333;
+    margin-bottom:8px;
+}
+
+.input-wrapper{
+    position:relative;
+}
+
+.input-wrapper input{
+    width:100%;
+    padding:14px 15px 14px 45px;
+    border:1px solid #d4cfc5;
+    border-radius:10px;
+    font-size:14px;
+    background:#f8f6f2;
+    outline:none;
+}
+
+.input-wrapper input:focus{
+    border-color:#c9a227;
+}
+
+.input-icon{
+    position:absolute;
+    left:15px;
+    top:50%;
+    transform:translateY(-50%);
+    color:#888;
+}
+
+.btn-primary{
+    width:100%;
+    padding:16px;
+    background:#c9a227;
+    color:white;
+    border:none;
+    border-radius:10px;
+    font-size:15px;
+    font-weight:600;
+    cursor:pointer;
+    margin-bottom:15px;
+}
+
+.btn-primary:hover{
+    background:#b89420;
+}
+
+.btn-secondary{
+    width:100%;
+    padding:14px;
+    background:white;
+    color:#333;
+    border:1px solid #ddd;
+    border-radius:10px;
+    font-size:14px;
+    cursor:pointer;
+}
+
+.btn-secondary:hover{
+    background:#f5f5f5;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="left-panel">
+
+    <div class="logo-container">
+        <div class="logo">
+            <img src="{{ url_for('static', filename='img/veyli.png') }}" alt="VEYLI Logo">
+        </div>
+    </div>
+
+    <div class="left-content">
+
+        <h1>
+            Gestión integral<br>
+            de <span>mensajería</span><br>
+            y logística
+        </h1>
+
+        <p>
+            Plataforma unificada para la administración de rutas, envíos, conductores y clientes en tiempo real.
+        </p>
+
+        <div class="stats">
+
+            <div>
+                <div class="stat-number">98%</div>
+                <div class="stat-label">Entregas puntuales</div>
+            </div>
+
+            <div>
+                <div class="stat-number">24/7</div>
+                <div class="stat-label">Monitoreo</div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="right-panel">
+
+    <div class="login-card">
+
+        <h2>Recuperar contraseña</h2>
+        <p class="subtitle">Te enviaremos un enlace de restablecimiento a tu correo</p>
+
+        <form>
+
+            <div class="form-group">
+
+                <label>Correo electrónico registrado</label>
+
+                <div class="input-wrapper">
+
+                    <span class="input-icon">✉</span>
+
+                    <input type="email" placeholder="Correo electrónico">
+
+                </div>
+
+            </div>
+
+            <button type="button" class="btn-primary"
+                    onclick="window.location.href='{{ url_for('main.index') }}'">
+                Enviar enlace de recuperación
+            </button>
+
+            <button type="button" class="btn-secondary"
+                    onclick="window.location.href='{{ url_for('main.index') }}'">
+                ← Volver al inicio de sesión
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+</body>
+</html>

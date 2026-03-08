@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VEYLI - Historial</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f5f0e8;
+            min-height: 100vh;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: #1a5f7a;
+            padding: 12px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .logo-nav {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            height: 65px;
+            width: auto;
+            display: block;
+        }
+
+        .logo-text-img {
+            height: 22px;
+            width: auto;
+            display: block;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 8px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 18px;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .nav-item.active {
+            background: rgba(201, 162, 39, 0.3);
+            color: #c9a227;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .icon-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 25px;
+            cursor: pointer;
+        }
+
+        .user-avatar {
+            width: 28px;
+            height: 28px;
+            background: #c9a227;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+            color: white;
+        }
+
+        .user-name {
+            color: white;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 30px;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 25px;
+        }
+
+        .page-title {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .page-title h1 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 5px;
+        }
+
+        .page-title p {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .btn-export {
+            padding: 10px 20px;
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #333;
+            transition: all 0.3s;
+        }
+
+        .btn-export:hover {
+            background: #f5f5f5;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+        }
+
+        .stat-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            font-size: 36px;
+            font-weight: 700;
+        }
+
+        .stat-value.blue {
+            color: #1a5f7a;
+        }
+
+        .stat-value.green {
+            color: #4caf50;
+        }
+
+        .stat-value.red {
+            color: #d32f2f;
+        }
+
+        /* Table Section */
+        .table-section {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .section-title h2 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+
+        .section-title p {
+            font-size: 13px;
+            color: #888;
+        }
+
+        .filters {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .filter-btn {
+            padding: 8px 16px;
+            border: 1px solid #e0e0e0;
+            background: white;
+            border-radius: 20px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .filter-btn.active {
+            background: #1a5f7a;
+            color: white;
+            border-color: #1a5f7a;
+        }
+
+        .filter-select {
+            padding: 8px 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 20px;
+            font-size: 13px;
+            outline: none;
+            background: white;
+        }
+
+        .search-box {
+            padding: 8px 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 20px;
+            font-size: 13px;
+            width: 150px;
+            outline: none;
+        }
+
+        /* Table */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .data-table th {
+            text-align: left;
+            padding: 15px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #1a5f7a;
+            background: #f5f0e8;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .data-table td {
+            padding: 15px;
+            font-size: 13px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .data-table tr:hover {
+            background: #fafafa;
+        }
+
+        .code-cell {
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+
+        .location-cell {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #666;
+        }
+
+        .service-badge {
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 11px;
+            font-weight: 500;
+            display: inline-block;
+        }
+
+        .service-express {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .service-economico {
+            background: #f5f5f5;
+            color: #616161;
+        }
+
+        .service-estandar {
+            background: #fff3e0;
+            color: #f57c00;
+        }
+
+        .status-badge {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .status-transit {
+            background: #fff8e1;
+            color: #f9a825;
+        }
+
+        .status-delivered {
+            background: #e8f5e9;
+            color: #4caf50;
+        }
+
+        .status-delayed {
+            background: #ffebee;
+            color: #f44336;
+        }
+
+        .status-pending {
+            background: #f5f5f5;
+            color: #757575;
+        }
+
+        .date-cell {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #666;
+        }
+
+        .table-footer {
+            margin-top: 15px;
+            padding: 15px;
+            background: #f5f0e8;
+            border-radius: 8px;
+            font-size: 13px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-left">
+            <div class="logo-nav">
+                <img src="{{ url_for('static', filename='img/veyli.png') }}" alt="Logo VEYLI" class="logo-icon">
+                <img src="{{ url_for('static', filename='img/veyli2.png') }}" alt="Texto VEYLI" class="logo-text-img">
+            </div>
+
+            <div class="nav-menu">
+                <a href="{{ url_for('main.inicio') }}" class="nav-item">
+                    <i class="fa-solid fa-house"></i>
+                    Inicio
+                </a>
+
+                <a href="{{ url_for('main.envios') }}" class="nav-item">
+                    <i class="fa-solid fa-box"></i>
+                    Mis envíos
+                </a>
+
+                <a href="{{ url_for('main.rastrear') }}" class="nav-item">
+                    <i class="fa-solid fa-box"></i>
+                    Rastrear envío
+                </a>
+
+                <a href="#" class="nav-item active">
+                    <i class="fa-solid fa-clipboard-list"></i>
+                    Historial
+                </a>
+
+                <a href="#" class="nav-item">
+                    <i class="fa-solid fa-headset"></i>
+                    Soporte
+                </a>
+            </div>
+        </div>
+
+        <div class="nav-right">
+            <button class="icon-btn">
+                <i class="fa-solid fa-bell"></i>
+            </button>
+
+            <div class="user-menu">
+                <div class="user-avatar">U</div>
+                <span class="user-name">Usuario</span>
+                <i class="fa-solid fa-caret-down"></i>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="page-header">
+            <div class="page-title">
+                <i class="fa-solid fa-clipboard-list"></i>
+                <div>
+                    <h1>Historial</h1>
+                    <p>Registro completo de todos tus envíos anteriores</p>
+                </div>
+            </div>
+
+            <button class="btn-export">
+                <i class="fa-solid fa-download"></i>
+                Exportar historial
+            </button>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-info">
+                    <span class="stat-label">Total registros</span>
+                    <span class="stat-value blue">5</span>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-info">
+                    <span class="stat-label">Entregados</span>
+                    <span class="stat-value green">1</span>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-info">
+                    <span class="stat-label">Con retraso</span>
+                    <span class="stat-value red">1</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-section">
+            <div class="section-header">
+                <div class="section-title">
+                    <h2>Registro de envíos</h2>
+                    <p>5 de 5 registros</p>
+                </div>
+
+                <div class="filters">
+                    <button class="filter-btn active">Todos</button>
+                    <button class="filter-btn">Entregado</button>
+                    <button class="filter-btn">Retrasado</button>
+
+                    <select class="filter-select">
+                        <option>Últimos 30 días</option>
+                    </select>
+
+                    <input type="text" class="search-box" placeholder="Buscar...">
+                </div>
+            </div>
+
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Origen</th>
+                        <th>Destino</th>
+                        <th>Tipo</th>
+                        <th>Servicio</th>
+                        <th>F. registro</th>
+                        <th>F. entrega</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td class="code-cell">TMS-2026-001</td>
+                        <td>
+                            <span class="location-cell">
+                                <i class="fa-solid fa-location-dot"></i>
+                                CDMX
+                            </span>
+                        </td>
+                        <td>Guadalajara</td>
+                        <td>Documento</td>
+                        <td><span class="service-badge service-express">Express</span></td>
+                        <td>
+                            <span class="date-cell">
+                                <i class="fa-regular fa-calendar"></i>
+                                2026-01-21
+                            </span>
+                        </td>
+                        <td>
+                            <span class="date-cell">
+                                <i class="fa-regular fa-calendar"></i>
+                                2026-01-13
+                            </span>
+                        </td>
+                        <td>
+                            <span class="status-badge status-transit">
+                                <i class="fa-solid fa-circle"></i>
+                                En ruta
+                            </span>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="code-cell">TMS-2025-002</td>
+                        <td>
+                            <span class="location-cell">
+                                <i class="fa-solid fa-location-dot"></i>
+                                CDMX
+                            </span>
+                        </td>
+                        <td>Puebla</td>
+                        <td>Paquete grande</td>
+                        <td><span class="service-badge service-economico">Económico</span></td>
+                        <td>
+                            <span class="date-cell">
+                                <i class="fa-regular fa-calendar"></i>
+                                2025-12-20
+                            </span>
+                        </td>
+                        <td>
+                            <span class="date-cell">
+                                <i class="fa-regular fa-calendar"></i>
+                                2025-12-23
+                            </span>
+                        </td>
+                        <td>
+                            <span class="status-badge status-delayed">
+                                <i class="fa-regular fa-clock"></i>
+                                Retrasado
+                            </span>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="code-cell">TMS-2025-003</td>
+                        <td>
+                            <span class="location-cell">
+                                <i class="fa-solid fa-location-dot"></i>
+                                Querétaro
+                            </span>
+                        </td>
+                        <td>CDMX</td>
+                        <td>Documento</td>
+                        <td><span class="service-badge service-estandar">Estándar</span></td>
+                        <td>
+                            <span class="date-cell">
+                                <i class="fa-regular fa-calendar"></i>
+                                2026-02-10
+                            </span>
+                        </td>
+                        <td>
+                            <span class="date-cell">
+                                <i class="fa-regular fa-calendar"></i>
+                                2025-12-15
+                            </span>
+                        </td>
+                        <td>
+                            <span class="status-badge status-delivered">
+                                <i class="fa-solid fa-check"></i>
+                                Entregado
+                            </span>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="code-cell">TMS-2025-004</td>
+                        <td>
+                            <span class="location-cell">
+                                <i class="fa-solid fa-location-dot"></i>
+                                CDMX
+                            </span>
+                        </td>
+                        <td>Cancún</td>
+                        <td>Electrónico</td>
+                        <td><span class="service-badge service-express">Express</span></td>
+                        <td>
+                            <span class="date-cell">
+                                <i class="fa-regular fa-calendar"></i>
+                                2025-08-30
+                            </span>
+                        </td>
+                        <td>
+                            <span class="date-cell">
+                                <i class="fa-regular fa-calendar"></i>
+                                2025-12-05
+                            </span>
+                        </td>
+                        <td>
+                            <span class="status-badge status-transit">
+                                <i class="fa-solid fa-circle"></i>
+                                En ruta
+                            </span>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="code-cell">TMS-2025-005</td>
+                        <td>
+                            <span class="location-cell">
+                                <i class="fa-solid fa-location-dot"></i>
+                                Monterrey
+                            </span>
+                        </td>
+                        <td>Querétaro</td>
+                        <td>Paquete pequeño</td>
+                        <td><span class="service-badge service-economico">Económico</span></td>
+                        <td>
+                            <span class="date-cell">
+                                <i class="fa-regular fa-calendar"></i>
+                                2025-06-20
+                            </span>
+                        </td>
+                        <td>
+                            <span class="date-cell">
+                                <i class="fa-regular fa-calendar"></i>
+                                2025-11-25
+                            </span>
+                        </td>
+                        <td>
+                            <span class="status-badge status-pending">
+                                <i class="fa-solid fa-hourglass-half"></i>
+                                Pendiente
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="table-footer">
+                Mostrando 5 de 5 registros
+            </div>
+        </div>
+    </main>
+</body>
+</html>
