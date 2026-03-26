@@ -1,10 +1,17 @@
-version: "3"
-
 services:
-
   flask_app:
     build: .
+    container_name: veyli-client
+    restart: unless-stopped
     ports:
       - "5001:5001"
     volumes:
       - .:/app
+    environment:
+      FLASK_ENV: ${FLASK_ENV:-development}
+      SECRET_KEY: ${SECRET_KEY:-change-me}
+      API_BASE_URL: ${API_BASE_URL:-http://host.docker.internal:8001/api/v1}
+      API_TIMEOUT: ${API_TIMEOUT:-15}
+      JWT_STORAGE_MODE: ${JWT_STORAGE_MODE:-session}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"

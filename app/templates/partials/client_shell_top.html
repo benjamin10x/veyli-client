@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VEYLI Cliente</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="client-body">
+    <nav class="client-nav">
+        <div class="brand">
+            <img src="{{ url_for('static', filename='img/veyli.png') }}" alt="VEYLI">
+            <span>VEYLI</span>
+        </div>
+        <div class="nav-links">
+            <a href="{{ url_for('main.inicio') }}" class="{{ 'active' if active_page == 'inicio' else '' }}">Inicio</a>
+            <a href="{{ url_for('main.envios') }}" class="{{ 'active' if active_page == 'envios' else '' }}">Mis envíos</a>
+            <a href="{{ url_for('main.rastrear') }}" class="{{ 'active' if active_page == 'rastrear' else '' }}">Rastrear</a>
+            <a href="{{ url_for('main.historial') }}" class="{{ 'active' if active_page == 'historial' else '' }}">Historial</a>
+        </div>
+        <div class="client-nav-actions">
+            <div class="client-dropdown">
+                <button type="button" class="client-icon-btn" data-client-dropdown="notifications">
+                    <span class="client-badge hidden" data-client-badge></span>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                        <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                    </svg>
+                </button>
+                <div class="client-menu-panel" data-client-panel="notifications">
+                    <div class="client-menu-head">
+                        <strong>Notificaciones</strong>
+                        <span data-client-notification-copy>Sin nuevas</span>
+                    </div>
+                    <div data-client-notification-list>
+                    {% for notification in current_notifications %}
+                        <div class="client-menu-item" data-notification-item data-notification-id="{{ notification.id }}">
+                            <strong>{{ notification.title }}</strong>
+                            <span>{{ notification.message }}</span>
+                        </div>
+                    {% else %}
+                        <div class="client-menu-empty" data-client-notification-empty>No tienes alertas nuevas.</div>
+                    {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="client-dropdown">
+                <button type="button" class="client-user-trigger" data-client-dropdown="profile">
+                    <span class="client-avatar">{{ (current_user.name[:1] if current_user and current_user.name else 'U')|upper }}</span>
+                    <span>{{ current_user.name if current_user else 'Usuario' }}</span>
+                </button>
+                <div class="client-menu-panel client-profile-panel" data-client-panel="profile">
+                    <div class="client-menu-head">
+                        <strong>{{ current_user.name if current_user else 'Usuario' }}</strong>
+                        <span>{{ current_user.email if current_user else '' }}</span>
+                    </div>
+                    <a href="{{ url_for('main.perfil') }}" class="client-menu-link">Mi perfil</a>
+                    <a href="{{ url_for('main.perfil') }}" class="client-menu-link">Configuración</a>
+                    <form method="post" action="{{ url_for('main.logout') }}">
+                        <button type="submit" class="client-menu-link logout">Cerrar sesión</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </nav>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-stack flash-shell">
+                {% for category, message in messages %}
+                    <div class="flash {{ category }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+    <script>
+        (function () {
+            const currentUserId = "{{ current_user.id if current_user else '' }}";
+            const notificationPanel = document.querySelector('[data-client-panel="notifications"]');
+            const notificationList = document.querySelector('[data-client-notification-list]');
+            const notificationCopy = document.querySelector('[data-client-notification-copy]');
+            const badge = document.querySelector('[data-client-badge]');
+            const notificationItems = Array.from(document.querySelectorAll('[data-notification-item]'));
+            const storageKey = currentUserId ? `veyli_client_seen_notifications_${currentUserId}` : null;
+
+            const getLastSeen = function () {
+                return storageKey ? Number(window.localStorage.getItem(storageKey) || '0') : 0;
+            };
+
+            const setLastSeen = function (value) {
+                if (storageKey) {
+                    window.localStorage.setItem(storageKey, String(value));
+                }
+            };
+
+            const unreadItems = function () {
+                const lastSeen = getLastSeen();
+                return notificationItems.filter(function (item) {
+                    return Number(item.getAttribute('data-notification-id') || '0') > lastSeen;
+                });
+            };
+
+            const renderUnreadState = function () {
+                const unread = unreadItems();
+
+                notificationItems.forEach(function (item) {
+                    item.style.display = unread.includes(item) ? 'flex' : 'none';
+                });
+
+                if (badge) {
+                    if (unread.length > 0) {
+                        badge.classList.remove('hidden');
+                        badge.textContent = unread.length > 9 ? '9+' : String(unread.length);
+                    } else {
+                        badge.classList.add('hidden');
+                        badge.textContent = '';
+                    }
+                }
+
+                if (notificationCopy) {
+                    notificationCopy.textContent = unread.length > 0 ? `${unread.length} nuevas` : 'Sin nuevas';
+                }
+
+                const hasEmpty = notificationList && notificationList.querySelector('[data-client-notification-empty]');
+                if (!unread.length && !hasEmpty && notificationList) {
+                    notificationList.insertAdjacentHTML('beforeend', '<div class="client-menu-empty" data-client-notification-empty>No tienes alertas nuevas.</div>');
+                }
+
+                if (unread.length && hasEmpty) {
+                    hasEmpty.remove();
+                }
+            };
+
+            renderUnreadState();
+
+            document.querySelectorAll('[data-client-dropdown]').forEach(function (trigger) {
+                trigger.addEventListener('click', function () {
+                    const key = trigger.getAttribute('data-client-dropdown');
+                    const panel = document.querySelector('[data-client-panel="' + key + '"]');
+                    document.querySelectorAll('[data-client-panel]').forEach(function (item) {
+                        if (item !== panel) {
+                            item.classList.remove('active');
+                        }
+                    });
+                    panel?.classList.toggle('active');
+
+                    if (key === 'notifications' && panel?.classList.contains('active')) {
+                        const maxSeen = notificationItems.reduce(function (maxValue, item) {
+                            return Math.max(maxValue, Number(item.getAttribute('data-notification-id') || '0'));
+                        }, getLastSeen());
+                        setLastSeen(maxSeen);
+                        renderUnreadState();
+                    }
+                });
+            });
+        })();
+
+        document.addEventListener('click', function (event) {
+            if (!event.target.closest('.client-dropdown')) {
+                document.querySelectorAll('[data-client-panel]').forEach(function (panel) {
+                    panel.classList.remove('active');
+                });
+            }
+        });
+    </script>

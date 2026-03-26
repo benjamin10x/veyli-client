@@ -1,0 +1,24 @@
+{% set active_page = 'perfil' %}
+{% include 'partials/client_shell_top.html' %}
+<main class="main-content">
+    <div class="page-header">
+        <div class="page-title">
+            <h1>Mi perfil</h1>
+            <p>Actualiza tus datos personales y de contacto.</p>
+        </div>
+    </div>
+
+    <div class="table-section">
+        <form method="post" class="profile-grid">
+            <label>Nombre<input name="first_name" value="{{ profile.first_name if profile else '' }}" required></label>
+            <label>Apellidos<input name="last_name" value="{{ profile.last_name if profile else '' }}" required></label>
+            <label>Correo<input type="email" name="email" value="{{ profile.email if profile else '' }}" required></label>
+            <label>Teléfono<input name="phone" value="{{ profile.phone if profile else '' }}"></label>
+            <label style="grid-column:1 / -1;">Dirección<input name="address" value="{{ profile.address if profile else '' }}"></label>
+            <div style="grid-column:1 / -1; display:flex; justify-content:flex-end;">
+                <button class="btn-primary" type="submit">Guardar cambios</button>
+            </div>
+        </form>
+    </div>
+</main>
+{% include 'partials/client_shell_bottom.html' %}

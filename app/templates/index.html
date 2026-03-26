@@ -3,352 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VEYLI - Iniciar Sesión</title>
-
+    <title>VEYLI | Iniciar sesión</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            min-height: 100vh;
-            display: flex;
-        }
-
-        .left-panel {
-            width: 45%;
-            background: linear-gradient(135deg, #1a5f7a 0%, #2d8a9e 50%, #3ba3b5 100%);
-            padding: 60px 50px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .left-panel::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px);
-            background-size: 30px 30px;
-            opacity: 0.3;
-        }
-
-        .logo-container {
-            position: relative;
-            z-index: 1;
-            margin-bottom: 50px;
-        }
-
-        .logo {
-            width: 200px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .logo img {
-            width: 100%;
-            height: auto;
-        }
-
-        .left-content {
-            position: relative;
-            z-index: 1;
-            color: white;
-        }
-
-        .left-content h1 {
-            font-size: 42px;
-            font-weight: 700;
-            line-height: 1.2;
-            margin-bottom: 20px;
-        }
-
-        .left-content h1 span {
-            color: #c9a227;
-        }
-
-        .left-content p {
-            font-size: 16px;
-            line-height: 1.6;
-            opacity: 0.9;
-            margin-bottom: 40px;
-            max-width: 380px;
-        }
-
-        .stats {
-            display: flex;
-            gap: 50px;
-        }
-
-        .stat-number {
-            font-size: 36px;
-            font-weight: 700;
-        }
-
-        .stat-label {
-            font-size: 14px;
-            opacity: 0.8;
-            margin-top: 5px;
-        }
-
-        .right-panel {
-            width: 55%;
-            background: #f5f0e8;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 40px;
-        }
-
-        .login-card {
-            background: #ebe5db;
-            border-radius: 20px;
-            padding: 50px 45px;
-            width: 100%;
-            max-width: 420px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-        }
-
-        .login-card h2 {
-            font-size: 24px;
-            font-weight: 600;
-            color: #1a1a1a;
-            margin-bottom: 35px;
-            text-align: center;
-        }
-
-        .form-group {
-            margin-bottom: 25px;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 14px;
-            font-weight: 500;
-            color: #333;
-            margin-bottom: 8px;
-        }
-
-        .input-wrapper {
-            position: relative;
-        }
-
-        .input-wrapper input {
-            width: 100%;
-            padding: 14px 15px 14px 45px;
-            border: 1px solid #d4cfc5;
-            border-radius: 10px;
-            font-size: 14px;
-            background: #f8f6f2;
-            outline: none;
-        }
-
-        .input-wrapper input:focus {
-            border-color: #c9a227;
-        }
-
-        .input-icon {
-            position: absolute;
-            left: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #888;
-            font-size: 16px;
-        }
-
-        .password-toggle {
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #888;
-            cursor: pointer;
-        }
-
-        .forgot-password {
-            text-align: right;
-            margin-top: -15px;
-            margin-bottom: 20px;
-        }
-
-        .forgot-password a {
-            font-size: 12px;
-            color: #c9a227;
-            text-decoration: underline;
-        }
-
-        .checkbox-wrapper {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 25px;
-        }
-
-        .checkbox-wrapper input {
-            width: 18px;
-            height: 18px;
-            accent-color: #c9a227;
-        }
-
-        .checkbox-wrapper label {
-            font-size: 13px;
-            color: #555;
-        }
-
-        .btn-primary {
-            width: 100%;
-            padding: 16px;
-            background: #c9a227;
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .btn-primary:hover {
-            background: #b89420;
-        }
-
-        .divider {
-            display: flex;
-            align-items: center;
-            margin: 25px 0;
-            color: #999;
-            font-size: 13px;
-        }
-
-        .divider::before,
-        .divider::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: #ccc;
-        }
-
-        .divider span {
-            padding: 0 15px;
-        }
-
-        .register-link {
-            text-align: center;
-            font-size: 14px;
-            color: #555;
-        }
-
-        .register-link a {
-            color: #c9a227;
-            font-weight: 600;
-            text-decoration: none;
-        }
-
-        .register-link a:hover {
-            text-decoration: underline;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
-<body>
-    <div class="left-panel">
-        <div class="logo-container">
-            <div class="logo">
-                <img src="{{ url_for('static', filename='img/veyli.png') }}" alt="VEYLI Logo">
+<body class="auth-body">
+    <section class="auth-shell">
+        <div class="auth-panel auth-left">
+            <img src="{{ url_for('static', filename='img/veyli.png') }}" alt="VEYLI" class="auth-logo">
+            <h1>Gestión integral de mensajería y logística</h1>
+            <p>Accede a tu espacio personal para registrar, rastrear y consultar tus envíos.</p>
+            <div class="auth-stats">
+                <div><strong>98%</strong><span>Entregas puntuales</span></div>
+                <div><strong>24/7</strong><span>Monitoreo</span></div>
             </div>
         </div>
-
-        <div class="left-content">
-            <h1>
-                Gestión integral<br>
-                de <span>mensajería</span><br>
-                y logística
-            </h1>
-
-            <p>
-                Plataforma unificada para la administración de rutas, envíos, conductores y clientes en tiempo real.
-            </p>
-
-            <div class="stats">
-                <div>
-                    <div class="stat-number">98%</div>
-                    <div class="stat-label">Entregas puntuales</div>
-                </div>
-
-                <div>
-                    <div class="stat-number">24/7</div>
-                    <div class="stat-label">Monitoreo</div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="right-panel">
-        <div class="login-card">
-            <h2>Iniciar Sesión</h2>
-
-            <form>
-                <div class="form-group">
-                    <label>Correo electrónico</label>
-                    <div class="input-wrapper">
-                        <span class="input-icon">
-                            <i class="fas fa-envelope"></i>
-                        </span>
-                        <input type="email" placeholder="Correo electrónico">
+        <div class="auth-panel auth-right">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="flash-stack">
+                        {% for category, message in messages %}
+                            <div class="flash {{ category }}">{{ message }}</div>
+                        {% endfor %}
                     </div>
-                </div>
-
-                <div class="form-group">
-                    <label>Contraseña</label>
-                    <div class="input-wrapper">
-                        <span class="input-icon">
-                            <i class="fas fa-lock"></i>
-                        </span>
-                        <input type="password" placeholder="••••••••">
-                        <span class="password-toggle">
-                            <i class="fas fa-eye"></i>
-                        </span>
-                    </div>
-                </div>
-
-                <div class="forgot-password">
-                    <a href="{{ url_for('main.recuperar') }}">¿Olvidaste tu contraseña?</a>
-                </div>
-
-                <div class="checkbox-wrapper">
-                    <input type="checkbox" id="remember">
-                    <label for="remember">Recordar inicio de sesión</label>
-                </div>
-
-                <button type="button" class="btn-primary"
-                        onclick="window.location.href='{{ url_for('main.inicio') }}'">
-                    Iniciar sesión
-                    <i class="fas fa-arrow-right"></i>
-                </button>
+                {% endif %}
+            {% endwith %}
+            <h2>Iniciar sesión</h2>
+            <p class="subtitle">Ingresa tus credenciales para acceder al sistema.</p>
+            <form method="post" class="auth-form">
+                <label>Correo electrónico
+                    <input type="email" name="email" value="{{ form.email if form else '' }}" placeholder="correo@ejemplo.com" required>
+                </label>
+                <label>Contraseña
+                    <input type="password" name="password" placeholder="••••••••" required>
+                </label>
+                <button type="submit" class="btn-primary">Iniciar sesión</button>
             </form>
-
-            <div class="divider">
-                <span>o</span>
-            </div>
-
-            <div class="register-link">
-                ¿No tienes cuenta? <a href="{{ url_for('main.registro') }}">Regístrate aquí</a>
+            <div class="auth-links">
+                <a href="{{ url_for('main.recuperar') }}">¿Olvidaste tu contraseña?</a>
+                <span>¿No tienes cuenta? <a href="{{ url_for('main.registro') }}">Regístrate</a></span>
             </div>
         </div>
-    </div>
+    </section>
 </body>
 </html>

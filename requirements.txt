@@ -1,2 +1,6 @@
-Flask
-python-dotenv
+Flask==3.1.0
+python-dotenv==1.1.0
+requests==2.32.3
+pydantic==2.11.3
+email-validator==2.2.0
+pytest==8.3.5

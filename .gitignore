@@ -1,5 +1,15 @@
+.env
+.env.local
+.venv/
 venv/
 __pycache__/
 *.pyc
-.env
+*.pyo
+*.pyd
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.idea/
+.vscode/
 instance/

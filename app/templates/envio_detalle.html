@@ -1,0 +1,39 @@
+{% set active_page = 'envios' %}
+{% include 'partials/client_shell_top.html' %}
+<main class="main-content">
+    <div class="page-header">
+        <div class="page-title">
+            <h1>Detalle del envío</h1>
+            <p>{{ package.tracking_code }}</p>
+        </div>
+        <a class="btn-secondary" href="{{ url_for('main.envios') }}">Volver</a>
+    </div>
+
+    <div class="detail-grid">
+        <div class="detail-card">
+            <h3>Información general</h3>
+            <p><strong>Descripción:</strong> {{ package.description }}</p>
+            <p><strong>Tipo:</strong> {{ package.package_type }}</p>
+            <p><strong>Peso:</strong> {{ package.weight }}</p>
+            <p><strong>Volumen:</strong> {{ package.volume or '—' }}</p>
+        </div>
+        <div class="detail-card">
+            <h3>Logística</h3>
+            <p><strong>Origen:</strong> {{ package.origin_address }}</p>
+            <p><strong>Destino:</strong> {{ package.destination_address }}</p>
+            <p><strong>Estado:</strong> {{ package.get('status', {}).get('name', 'Sin estado') }}</p>
+            <p><strong>Entrega estimada:</strong> {{ package.estimated_delivery_at or '—' }}</p>
+        </div>
+        <div class="detail-card" style="grid-column:1 / -1;">
+            <h3>Eventos</h3>
+            <ul class="events-list">
+                {% for event in package.get('events', []) %}
+                    <li><strong>{{ event.get('created_at', '')[:16] }}</strong> · {{ event.get('description', '') }}</li>
+                {% else %}
+                    <li>Sin eventos registrados.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</main>
+{% include 'partials/client_shell_bottom.html' %}

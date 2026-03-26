@@ -3,266 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VEYLI - Registro de Usuario</title>
-
+    <title>VEYLI | Registro</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
-<style>
-
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
-
-body{
-    font-family:'Inter',sans-serif;
-    min-height:100vh;
-    display:flex;
-}
-
-.left-panel{
-    width:45%;
-    background:linear-gradient(135deg,#1a5f7a,#2d8a9e,#3ba3b5);
-    padding:60px 50px;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    color:white;
-}
-
-.logo-container{
-    margin-bottom:50px;
-}
-
-.logo img{
-    width:200px;
-}
-
-.left-content h1{
-    font-size:42px;
-    margin-bottom:20px;
-}
-
-.left-content span{
-    color:#c9a227;
-}
-
-.left-content p{
-    margin-bottom:40px;
-    max-width:380px;
-}
-
-.stats{
-    display:flex;
-    gap:50px;
-}
-
-.stat-number{
-    font-size:36px;
-    font-weight:700;
-}
-
-.right-panel{
-    width:55%;
-    background:#f5f0e8;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:40px;
-}
-
-.login-card{
-    background:#ebe5db;
-    border-radius:20px;
-    padding:40px 45px;
-    width:100%;
-    max-width:450px;
-}
-
-.login-card h2{
-    margin-bottom:5px;
-}
-
-.subtitle{
-    font-size:13px;
-    margin-bottom:25px;
-}
-
-.form-group{
-    margin-bottom:18px;
-}
-
-.form-group label{
-    display:block;
-    margin-bottom:6px;
-}
-
-.input-wrapper{
-    position:relative;
-}
-
-.input-wrapper input{
-    width:100%;
-    padding:12px 15px;
-    border:1px solid #d4cfc5;
-    border-radius:10px;
-    background:#f8f6f2;
-}
-
-.password-toggle{
-    position:absolute;
-    right:15px;
-    top:50%;
-    transform:translateY(-50%);
-    cursor:pointer;
-}
-
-.btn-primary{
-    width:100%;
-    padding:14px;
-    background:#c9a227;
-    color:white;
-    border:none;
-    border-radius:10px;
-    font-weight:600;
-    cursor:pointer;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap:8px;
-    margin-bottom:15px;
-}
-
-.btn-primary:hover{
-    background:#b89420;
-}
-
-.terms-text{
-    font-size:11px;
-    text-align:center;
-    margin:15px 0;
-}
-
-.login-link{
-    text-align:center;
-}
-
-</style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
-
-<body>
-
-<div class="left-panel">
-
-    <div class="logo-container">
-        <div class="logo">
-            <img src="{{ url_for('static', filename='img/veyli.png') }}" alt="VEYLI Logo">
+<body class="auth-body">
+    <section class="auth-shell">
+        <div class="auth-panel auth-left">
+            <img src="{{ url_for('static', filename='img/veyli.png') }}" alt="VEYLI" class="auth-logo">
+            <h1>Registro de cliente VEYLI</h1>
+            <p>Crea tu cuenta y empieza a controlar tus envíos desde una sola plataforma.</p>
         </div>
-    </div>
-
-    <div class="left-content">
-
-        <h1>
-            Gestión integral<br>
-            de <span>mensajería</span><br>
-            y logística
-        </h1>
-
-        <p>
-            Plataforma unificada para la administración de rutas, envíos,
-            conductores y clientes en tiempo real.
-        </p>
-
-        <div class="stats">
-
-            <div>
-                <div class="stat-number">98%</div>
-                <div>Entregas puntuales</div>
+        <div class="auth-panel auth-right">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="flash-stack">
+                        {% for category, message in messages %}
+                            <div class="flash {{ category }}">{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+            <h2>Crear cuenta</h2>
+            <form method="post" class="auth-form">
+                <label>Nombre
+                    <input type="text" name="first_name" value="{{ form.first_name if form else '' }}" required>
+                </label>
+                <label>Apellidos
+                    <input type="text" name="last_name" value="{{ form.last_name if form else '' }}" required>
+                </label>
+                <label>Correo
+                    <input type="email" name="email" value="{{ form.email if form else '' }}" required>
+                </label>
+                <label>Teléfono
+                    <input type="text" name="phone" value="{{ form.phone if form else '' }}">
+                </label>
+                <label>Dirección
+                    <input type="text" name="address" value="{{ form.address if form else '' }}">
+                </label>
+                <label>Contraseña
+                    <input type="password" name="password" required>
+                </label>
+                <label>Confirmar contraseña
+                    <input type="password" name="password_confirmation" required>
+                </label>
+                <button type="submit" class="btn-primary">Crear cuenta</button>
+            </form>
+            <div class="auth-links">
+                <span>¿Ya tienes cuenta? <a href="{{ url_for('main.index') }}">Inicia sesión</a></span>
             </div>
-
-            <div>
-                <div class="stat-number">24/7</div>
-                <div>Monitoreo</div>
-            </div>
-
         </div>
-
-    </div>
-
-</div>
-
-<div class="right-panel">
-
-    <div class="login-card">
-
-        <h2>Registro de Usuario</h2>
-        <p class="subtitle">
-            Completa los campos requeridos para crear tu acceso
-        </p>
-
-        <form>
-
-            <div class="form-group">
-                <label>Nombre completo</label>
-                <div class="input-wrapper">
-                    <input type="text" placeholder="Nombre">
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label>Correo electrónico</label>
-                <div class="input-wrapper">
-                    <input type="email" placeholder="Correo">
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label>Contraseña</label>
-                <div class="input-wrapper">
-                    <input type="password" placeholder="••••••••">
-                    <span class="password-toggle">
-                        <i class="fa-solid fa-eye"></i>
-                    </span>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label>Confirmar contraseña</label>
-                <div class="input-wrapper">
-                    <input type="password" placeholder="••••••••">
-                    <span class="password-toggle">
-                        <i class="fa-solid fa-eye"></i>
-                    </span>
-                </div>
-            </div>
-
-            <p class="terms-text">
-                Al crear la cuenta aceptas los
-                <a href="#">Términos de servicio</a>
-                y la
-                <a href="#">Política de privacidad</a>.
-            </p>
-
-            <button type="submit" class="btn-primary">
-                <i class="fa-solid fa-user-plus"></i>
-                Crear cuenta
-            </button>
-
-        </form>
-
-        <div class="login-link">
-            <i class="fa-solid fa-arrow-left"></i>
-            ¿Ya tienes cuenta?
-            <a href="{{ url_for('main.index') }}">Inicia sesión</a>
-        </div>
-
-    </div>
-
-</div>
-
+    </section>
 </body>
 </html>
