@@ -1,6 +1,7 @@
 {% set active_page = 'rastrear' %}
 {% include 'partials/client_shell_top.html' %}
 <main class="main-content">
+    {% set form_errors = errors or {} %}
     <div class="page-header">
         <div class="page-title">
             <h1>Rastrear envío</h1>
@@ -9,7 +10,11 @@
     </div>
 
     <form method="get" class="search-banner">
-        <input type="text" name="tracking_code" value="{{ tracking_code }}" placeholder="Ingresa el código de tracking" required>
+        <label class="form-field">
+            <span>Código de tracking</span>
+            <input type="text" name="tracking_code" value="{{ tracking_code }}" placeholder="Ingresa el código de tracking" class="{{ 'input-error' if form_errors.get('tracking_code') }}" required>
+            {% if form_errors.get('tracking_code') %}<div class="field-error">{{ form_errors['tracking_code'][0] }}</div>{% endif %}
+        </label>
         <button type="submit" class="btn-primary">Rastrear</button>
     </form>
 

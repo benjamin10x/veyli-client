@@ -1,12 +1,21 @@
 {% set active_page = 'envios' %}
 {% include 'partials/client_shell_top.html' %}
 <main class="main-content">
+    {% set form_errors = errors or {} %}
+    {% set package_form = form or {} %}
     <div class="page-header">
         <div class="page-title">
             <h1>Detalle del envío</h1>
             <p>{{ package.tracking_code }}</p>
         </div>
-        <a class="btn-secondary" href="{{ url_for('main.envios') }}">Volver</a>
+        <div class="header-actions">
+            {% if edit_mode %}
+                <a class="btn-secondary" href="{{ url_for('main.detalle_envio', package_id=package.id) }}">Cancelar edición</a>
+            {% else %}
+                <a class="btn-primary" href="{{ url_for('main.detalle_envio', package_id=package.id, edit=1) }}">Editar envío</a>
+            {% endif %}
+            <a class="btn-secondary" href="{{ url_for('main.envios') }}">Volver</a>
+        </div>
     </div>
 
     <div class="detail-grid">
@@ -34,6 +43,42 @@
                 {% endfor %}
             </ul>
         </div>
+
+        {% if edit_mode %}
+            <div class="detail-card" style="grid-column:1 / -1;">
+                <h3>Editar envío</h3>
+                <form method="post" action="{{ url_for('main.editar_envio', package_id=package.id) }}" class="profile-grid">
+                    <label>Origen
+                        <input name="origin_address" value="{{ package_form.get('origin_address', '') }}" class="{{ 'input-error' if form_errors.get('origin_address') }}" required>
+                        {% if form_errors.get('origin_address') %}<div class="field-error">{{ form_errors['origin_address'][0] }}</div>{% endif %}
+                    </label>
+                    <label>Destino
+                        <input name="destination_address" value="{{ package_form.get('destination_address', '') }}" class="{{ 'input-error' if form_errors.get('destination_address') }}" required>
+                        {% if form_errors.get('destination_address') %}<div class="field-error">{{ form_errors['destination_address'][0] }}</div>{% endif %}
+                    </label>
+                    <label>Descripción
+                        <input name="description" value="{{ package_form.get('description', '') }}" class="{{ 'input-error' if form_errors.get('description') }}" required>
+                        {% if form_errors.get('description') %}<div class="field-error">{{ form_errors['description'][0] }}</div>{% endif %}
+                    </label>
+                    <label>Tipo de paquete
+                        <input name="package_type" value="{{ package_form.get('package_type', '') }}" class="{{ 'input-error' if form_errors.get('package_type') }}" required>
+                        {% if form_errors.get('package_type') %}<div class="field-error">{{ form_errors['package_type'][0] }}</div>{% endif %}
+                    </label>
+                    <label>Peso
+                        <input type="number" step="0.01" min="0.01" name="weight" value="{{ package_form.get('weight', '') }}" class="{{ 'input-error' if form_errors.get('weight') }}" required>
+                        {% if form_errors.get('weight') %}<div class="field-error">{{ form_errors['weight'][0] }}</div>{% endif %}
+                    </label>
+                    <label>Volumen
+                        <input type="number" step="0.01" min="0.01" name="volume" value="{{ package_form.get('volume', '') }}" class="{{ 'input-error' if form_errors.get('volume') }}">
+                        {% if form_errors.get('volume') %}<div class="field-error">{{ form_errors['volume'][0] }}</div>{% endif %}
+                    </label>
+                    <div style="grid-column:1 / -1; display:flex; justify-content:flex-end; gap:12px;">
+                        <a class="btn-secondary" href="{{ url_for('main.detalle_envio', package_id=package.id) }}">Cancelar</a>
+                        <button class="btn-primary" type="submit">Guardar cambios</button>
+                    </div>
+                </form>
+            </div>
+        {% endif %}
     </div>
 </main>
 {% include 'partials/client_shell_bottom.html' %}

@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from datetime import date, datetime
+from typing import Any
 
 import requests
 from flask import current_app, session
@@ -15,6 +17,18 @@ class ApiClientError(Exception):
 
 class SessionExpiredError(ApiClientError):
     pass
+
+
+def _json_safe(value: Any) -> Any:
+    if isinstance(value, datetime):
+        return value.isoformat()
+    if isinstance(value, date):
+        return value.isoformat()
+    if isinstance(value, dict):
+        return {key: _json_safe(item) for key, item in value.items()}
+    if isinstance(value, list):
+        return [_json_safe(item) for item in value]
+    return value
 
 
 @dataclass
@@ -33,7 +47,7 @@ class ApiClient:
         response = requests.request(
             method=method,
             url=f"{self.base_url.rstrip('/')}/{path.lstrip('/')}",
-            json=json,
+            json=_json_safe(json) if json is not None else None,
             params={key: value for key, value in (params or {}).items() if value not in (None, "")},
             timeout=self.timeout,
             headers=self._headers(),
@@ -86,6 +100,9 @@ class ApiClient:
 
     def create_package(self, payload: dict) -> dict:
         return self.request("POST", "/clients/me/packages", json=payload)
+
+    def update_my_package(self, package_id: int, payload: dict) -> dict:
+        return self.request("PUT", f"/clients/me/packages/{package_id}", json=payload)
 
     def get_package(self, package_id: int) -> dict:
         return self.request("GET", f"/packages/{package_id}")

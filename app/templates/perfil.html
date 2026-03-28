@@ -1,6 +1,7 @@
 {% set active_page = 'perfil' %}
 {% include 'partials/client_shell_top.html' %}
 <main class="main-content">
+    {% set form_errors = errors or {} %}
     <div class="page-header">
         <div class="page-title">
             <h1>Mi perfil</h1>
@@ -10,11 +11,26 @@
 
     <div class="table-section">
         <form method="post" class="profile-grid">
-            <label>Nombre<input name="first_name" value="{{ profile.first_name if profile else '' }}" required></label>
-            <label>Apellidos<input name="last_name" value="{{ profile.last_name if profile else '' }}" required></label>
-            <label>Correo<input type="email" name="email" value="{{ profile.email if profile else '' }}" required></label>
-            <label>Teléfono<input name="phone" value="{{ profile.phone if profile else '' }}"></label>
-            <label style="grid-column:1 / -1;">Dirección<input name="address" value="{{ profile.address if profile else '' }}"></label>
+            <label>Nombre
+                <input name="first_name" value="{{ profile.first_name if profile else '' }}" class="{{ 'input-error' if form_errors.get('first_name') }}" required>
+                {% if form_errors.get('first_name') %}<div class="field-error">{{ form_errors['first_name'][0] }}</div>{% endif %}
+            </label>
+            <label>Apellidos
+                <input name="last_name" value="{{ profile.last_name if profile else '' }}" class="{{ 'input-error' if form_errors.get('last_name') }}" required>
+                {% if form_errors.get('last_name') %}<div class="field-error">{{ form_errors['last_name'][0] }}</div>{% endif %}
+            </label>
+            <label>Correo
+                <input type="email" name="email" value="{{ profile.email if profile else '' }}" class="{{ 'input-error' if form_errors.get('email') }}" required>
+                {% if form_errors.get('email') %}<div class="field-error">{{ form_errors['email'][0] }}</div>{% endif %}
+            </label>
+            <label>Teléfono
+                <input name="phone" value="{{ profile.phone if profile else '' }}" class="{{ 'input-error' if form_errors.get('phone') }}">
+                {% if form_errors.get('phone') %}<div class="field-error">{{ form_errors['phone'][0] }}</div>{% endif %}
+            </label>
+            <label style="grid-column:1 / -1;">Dirección
+                <input name="address" value="{{ profile.address if profile else '' }}" class="{{ 'input-error' if form_errors.get('address') }}">
+                {% if form_errors.get('address') %}<div class="field-error">{{ form_errors['address'][0] }}</div>{% endif %}
+            </label>
             <div style="grid-column:1 / -1; display:flex; justify-content:flex-end;">
                 <button class="btn-primary" type="submit">Guardar cambios</button>
             </div>

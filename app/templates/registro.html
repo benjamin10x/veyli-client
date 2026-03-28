@@ -15,6 +15,7 @@
             <p>Crea tu cuenta y empieza a controlar tus envíos desde una sola plataforma.</p>
         </div>
         <div class="auth-panel auth-right">
+            {% set form_errors = errors or {} %}
             {% with messages = get_flashed_messages(with_categories=true) %}
                 {% if messages %}
                     <div class="flash-stack">
@@ -27,25 +28,32 @@
             <h2>Crear cuenta</h2>
             <form method="post" class="auth-form">
                 <label>Nombre
-                    <input type="text" name="first_name" value="{{ form.first_name if form else '' }}" required>
+                    <input type="text" name="first_name" value="{{ form.first_name if form else '' }}" class="{{ 'input-error' if form_errors.get('first_name') }}" required>
+                    {% if form_errors.get('first_name') %}<div class="field-error">{{ form_errors['first_name'][0] }}</div>{% endif %}
                 </label>
                 <label>Apellidos
-                    <input type="text" name="last_name" value="{{ form.last_name if form else '' }}" required>
+                    <input type="text" name="last_name" value="{{ form.last_name if form else '' }}" class="{{ 'input-error' if form_errors.get('last_name') }}" required>
+                    {% if form_errors.get('last_name') %}<div class="field-error">{{ form_errors['last_name'][0] }}</div>{% endif %}
                 </label>
                 <label>Correo
-                    <input type="email" name="email" value="{{ form.email if form else '' }}" required>
+                    <input type="email" name="email" value="{{ form.email if form else '' }}" class="{{ 'input-error' if form_errors.get('email') }}" required>
+                    {% if form_errors.get('email') %}<div class="field-error">{{ form_errors['email'][0] }}</div>{% endif %}
                 </label>
                 <label>Teléfono
-                    <input type="text" name="phone" value="{{ form.phone if form else '' }}">
+                    <input type="text" name="phone" value="{{ form.phone if form else '' }}" class="{{ 'input-error' if form_errors.get('phone') }}">
+                    {% if form_errors.get('phone') %}<div class="field-error">{{ form_errors['phone'][0] }}</div>{% endif %}
                 </label>
                 <label>Dirección
-                    <input type="text" name="address" value="{{ form.address if form else '' }}">
+                    <input type="text" name="address" value="{{ form.address if form else '' }}" class="{{ 'input-error' if form_errors.get('address') }}">
+                    {% if form_errors.get('address') %}<div class="field-error">{{ form_errors['address'][0] }}</div>{% endif %}
                 </label>
                 <label>Contraseña
-                    <input type="password" name="password" required>
+                    <input type="password" name="password" class="{{ 'input-error' if form_errors.get('password') }}" required>
+                    {% if form_errors.get('password') %}<div class="field-error">{{ form_errors['password'][0] }}</div>{% endif %}
                 </label>
                 <label>Confirmar contraseña
-                    <input type="password" name="password_confirmation" required>
+                    <input type="password" name="password_confirmation" class="{{ 'input-error' if form_errors.get('password_confirmation') }}" required>
+                    {% if form_errors.get('password_confirmation') %}<div class="field-error">{{ form_errors['password_confirmation'][0] }}</div>{% endif %}
                 </label>
                 <button type="submit" class="btn-primary">Crear cuenta</button>
             </form>

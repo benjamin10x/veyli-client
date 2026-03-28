@@ -1,6 +1,7 @@
 {% set active_page = 'envios' %}
 {% include 'partials/client_shell_top.html' %}
 <main class="main-content">
+    {% set form_errors = errors or {} %}
     <div class="page-header">
         <div class="page-title">
             <h1>Mis envíos</h1>
@@ -10,13 +11,21 @@
     </div>
 
     <form class="filters-inline" method="get">
-        <input type="text" name="search" placeholder="Buscar tracking o destino" value="{{ request.args.get('search', '') }}">
-        <select name="status">
-            <option value="">Todos</option>
-            {% for status in ['Pendiente', 'En ruta', 'Entregado', 'Retrasado', 'Cancelado'] %}
-                <option value="{{ status }}" {% if request.args.get('status') == status %}selected{% endif %}>{{ status }}</option>
-            {% endfor %}
-        </select>
+        <label class="form-field">
+            <span>Búsqueda</span>
+            <input type="text" name="search" placeholder="Buscar tracking o destino" value="{{ request.args.get('search', '') }}" class="{{ 'input-error' if form_errors.get('search') }}">
+            {% if form_errors.get('search') %}<div class="field-error">{{ form_errors['search'][0] }}</div>{% endif %}
+        </label>
+        <label class="form-field">
+            <span>Estado</span>
+            <select name="status" class="{{ 'input-error' if form_errors.get('status') }}">
+                <option value="">Todos</option>
+                {% for status in ['Pendiente', 'En ruta', 'Entregado', 'Retrasado', 'Cancelado'] %}
+                    <option value="{{ status }}" {% if request.args.get('status') == status %}selected{% endif %}>{{ status }}</option>
+                {% endfor %}
+            </select>
+            {% if form_errors.get('status') %}<div class="field-error">{{ form_errors['status'][0] }}</div>{% endif %}
+        </label>
         <button type="submit" class="btn-secondary">Filtrar</button>
     </form>
 

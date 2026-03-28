@@ -1,6 +1,7 @@
 {% set active_page = 'historial' %}
 {% include 'partials/client_shell_top.html' %}
 <main class="main-content">
+    {% set form_errors = errors or {} %}
     <div class="page-header">
         <div class="page-title">
             <h1>Historial</h1>
@@ -10,15 +11,31 @@
     </div>
 
     <form method="get" class="filters-inline">
-        <input type="text" name="search" placeholder="Buscar..." value="{{ filters.get('search', '') }}">
-        <input type="date" name="start_date" value="{{ filters.get('start_date', '') }}">
-        <input type="date" name="end_date" value="{{ filters.get('end_date', '') }}">
-        <select name="status">
-            <option value="">Todos</option>
-            {% for status in ['Pendiente', 'En ruta', 'Entregado', 'Retrasado', 'Cancelado'] %}
-                <option value="{{ status }}" {% if filters.get('status') == status %}selected{% endif %}>{{ status }}</option>
-            {% endfor %}
-        </select>
+        <label class="form-field">
+            <span>Búsqueda</span>
+            <input type="text" name="search" placeholder="Buscar..." value="{{ filters.get('search', '') }}" class="{{ 'input-error' if form_errors.get('search') }}">
+            {% if form_errors.get('search') %}<div class="field-error">{{ form_errors['search'][0] }}</div>{% endif %}
+        </label>
+        <label class="form-field">
+            <span>Fecha inicial</span>
+            <input type="date" name="start_date" value="{{ filters.get('start_date', '') }}" class="{{ 'input-error' if form_errors.get('start_date') }}">
+            {% if form_errors.get('start_date') %}<div class="field-error">{{ form_errors['start_date'][0] }}</div>{% endif %}
+        </label>
+        <label class="form-field">
+            <span>Fecha final</span>
+            <input type="date" name="end_date" value="{{ filters.get('end_date', '') }}" class="{{ 'input-error' if form_errors.get('end_date') }}">
+            {% if form_errors.get('end_date') %}<div class="field-error">{{ form_errors['end_date'][0] }}</div>{% endif %}
+        </label>
+        <label class="form-field">
+            <span>Estado</span>
+            <select name="status" class="{{ 'input-error' if form_errors.get('status') }}">
+                <option value="">Todos</option>
+                {% for status in ['Pendiente', 'En ruta', 'Entregado', 'Retrasado', 'Cancelado'] %}
+                    <option value="{{ status }}" {% if filters.get('status') == status %}selected{% endif %}>{{ status }}</option>
+                {% endfor %}
+            </select>
+            {% if form_errors.get('status') %}<div class="field-error">{{ form_errors['status'][0] }}</div>{% endif %}
+        </label>
         <button type="submit" class="btn-secondary">Aplicar</button>
     </form>
 

@@ -19,6 +19,7 @@
             </div>
         </div>
         <div class="auth-panel auth-right">
+            {% set form_errors = errors or {} %}
             {% with messages = get_flashed_messages(with_categories=true) %}
                 {% if messages %}
                     <div class="flash-stack">
@@ -32,10 +33,12 @@
             <p class="subtitle">Ingresa tus credenciales para acceder al sistema.</p>
             <form method="post" class="auth-form">
                 <label>Correo electrónico
-                    <input type="email" name="email" value="{{ form.email if form else '' }}" placeholder="correo@ejemplo.com" required>
+                    <input type="email" name="email" value="{{ form.email if form else '' }}" placeholder="correo@ejemplo.com" class="{{ 'input-error' if form_errors.get('email') }}" required>
+                    {% if form_errors.get('email') %}<div class="field-error">{{ form_errors['email'][0] }}</div>{% endif %}
                 </label>
                 <label>Contraseña
-                    <input type="password" name="password" placeholder="••••••••" required>
+                    <input type="password" name="password" placeholder="••••••••" class="{{ 'input-error' if form_errors.get('password') }}" required>
+                    {% if form_errors.get('password') %}<div class="field-error">{{ form_errors['password'][0] }}</div>{% endif %}
                 </label>
                 <button type="submit" class="btn-primary">Iniciar sesión</button>
             </form>
